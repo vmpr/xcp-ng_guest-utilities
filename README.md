@@ -1,5 +1,6 @@
 xcp-ng_guest-utilities
 ======================
+[![Build Status](https://travis-ci.com/vmpr/xcp-ng_guest-utilities.svg?branch=master)](https://travis-ci.com/vmpr/xcp-ng_guest-utilities)
 
 this ansible role can be used to automate the installation of XCP-NG or Citrix Xenserver guest utilities.
 
