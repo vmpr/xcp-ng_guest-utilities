@@ -1,0 +1,16 @@
+---
+# overview:
+# compatibility:
+# - 7.9.0-1 => XenServer / XCP-ng Version 7.5
+# - 7.10.0-1 => XenServer / XCP-ng Version 7.6
+guest_utilities_version: '7.10.0-1'
+
+# if you want to use another server to download the package:
+guest_utilities_download_path: 'store.it-dd.net/xcp-ng/guest-utilities/'
+
+# decide if you want a reboot straight after installation
+# Default = false (you can do controlled reboots by yourself)
+guest_utilities_reboot_after_installation: false
+
+# if you need a proxy, you can configure it like this:
+# http_proxy: http://proxy.it-dd.net:3128

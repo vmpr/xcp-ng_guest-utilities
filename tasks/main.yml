@@ -1,0 +1,12 @@
+---
+# tasks file for xcp-ng_guest-utilities
+
+- name: Check if defined rpm is already installed
+  yum:
+    list: xe-guest-utilities-xenstore-{{ guest_utilities_version }}.x86_64
+  # If not installed yum_list.results[*].yumstate != installed
+  register: yum_list
+
+- name: install guest-utilities
+  include_tasks: install.yml
+  when: yum_list.results | selectattr("yumstate", "match", "installed") | list | length == 0

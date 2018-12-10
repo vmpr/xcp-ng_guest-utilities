@@ -1,0 +1,5 @@
+# inventory
+[bigbang]
+#amy_roletest image="chrismeyers/ubuntu12.04"
+sheldon_roletest image="chrismeyers/centos6"
+leonard_roletest image="chrismeyers/centos7"

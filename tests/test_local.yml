@@ -1,0 +1,12 @@
+# test.yml
+- name: Bring up docker containers for docker connection inventory iface
+  hosts: localhost
+  roles:
+    - role: provision_docker
+      provision_docker_privileged: true,
+      provision_docker_inventory_group: "{{ groups['bigbang'] }}"
+      provision_docker_use_docker_connection: true
+
+- hosts: bigbang
+  roles:
+     - { role: xcp-ng_guest-utilities }

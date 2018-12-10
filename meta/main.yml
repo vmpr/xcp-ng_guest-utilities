@@ -1,0 +1,25 @@
+galaxy_info:
+  author: Ringo Gierth
+  company: IT Consulting Dresden
+
+  license: Apache
+
+  min_ansible_version: 2.7
+
+  github_branch: master
+
+  #
+  # platforms is a list of platforms, and each platform has a name and a list of versions.
+  #
+  platforms:
+    - name: EL
+      versions:
+        - 6
+        - 7
+
+  galaxy_tags:
+    - system
+    - xenserver
+    - xcp-ng
+
+dependencies: []
