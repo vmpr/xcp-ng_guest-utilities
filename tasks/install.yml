@@ -18,7 +18,7 @@
   unarchive:
     src: /tmp/xe-guest-utilities_{{ guest_utilities_version }}.tgz
     dest: /tmp/
-    remote_src: yes
+    remote_src: true
 
 - name: install guest-utilities via script
   shell: /tmp/Linux/install.sh -n
