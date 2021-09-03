@@ -13,4 +13,4 @@ Requirements
 Install
 =======
 
-    $ sudo pip install docker-py molecule
+    $ sudo pip install docker-py molecule molecule-docker yamllint lint

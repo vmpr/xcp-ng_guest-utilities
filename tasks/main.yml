@@ -1,12 +1,26 @@
 ---
 # tasks file for xcp-ng_guest-utilities
+- block:
+  - name: Check if defined package is already installed
+    yum:
+      list: xe-guest-utilities-latest
+    register: yum_list
 
-- name: Check if defined rpm is already installed
-  yum:
-    list: xe-guest-utilities-xenstore-{{ guest_utilities_version }}.x86_64
-  # If not installed yum_list.results[*].yumstate != installed
-  register: yum_list
+  - name: install guest-utilities
+    include_tasks: install.yml
+    when: yum_list.results | selectattr("yumstate", "match", "installed") | list | length == 0
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
-- name: install guest-utilities
-  include_tasks: install.yml
-  when: yum_list.results | selectattr("yumstate", "match", "installed") | list | length == 0
+- block:
+    - name: "check that xe-guest-utilities in defined version {{ guest_utilities_version }} are installed"
+      apt:
+        name: xe-guest-utilities={{ guest_utilities_version }}
+        state: present
+      check_mode: true
+      ignore_errors: true
+      register: xe_package_check
+
+    - name: install guest-utilities
+      include_tasks: install.yml
+      when: xe_package_check.changed or xe_package_check.failed
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'

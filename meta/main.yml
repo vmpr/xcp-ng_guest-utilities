@@ -3,6 +3,7 @@ galaxy_info:
   author: Ringo Gierth
   description: ansible role for the installation of XCP-NG or Citrix Xenserver guest utilities
   company: IT Consulting Dresden
+  role_name: vmpr.xcpng_guest_utilities
 
   license: Apache
 
@@ -18,6 +19,9 @@ galaxy_info:
       versions:
         - 6
         - 7
+        - 8
+    - name: Debian
+        - 10
 
   galaxy_tags:
     - system

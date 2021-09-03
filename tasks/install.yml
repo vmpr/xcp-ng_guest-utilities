@@ -1,37 +1,53 @@
 ---
 # tasks file for xcp-ng_guest-utilities
+- block:
+  - name: Download guest-utilities tar archive
+    get_url:
+      url: http://{{ guest_utilities_download_path }}/xe-guest-utilities_{{ guest_utilities_version }}.tgz
+      dest: /tmp/
+      mode: 0440
+    environment:
+      http_proxy: '{{ http_proxy|default("") }}'
 
-- name: Download guest-utilities tar archive
-  get_url:
-    url: http://{{ guest_utilities_download_path }}/xe-guest-utilities_{{ guest_utilities_version }}.tgz
-    dest: /tmp/
-    mode: 0440
-  environment:
-    http_proxy: '{{ http_proxy|default("") }}'
+  - name: extract guest-utilities tgz archive
+    unarchive:
+      src: /tmp/xe-guest-utilities_{{ guest_utilities_version }}.tgz
+      dest: /tmp/
+      remote_src: true
 
-- name: install tar if not present (centos6 doesn't come with tar preinstalled)
-  package:
-    name: tar
-    state: present
+  - name: install guest-utilities via script
+    shell: /tmp/Linux/install.sh -n
+    become: true
 
-- name: extract guest-utilities tgz archive
-  unarchive:
-    src: /tmp/xe-guest-utilities_{{ guest_utilities_version }}.tgz
-    dest: /tmp/
-    remote_src: true
+  - name: clean after installation
+    file:
+      state: absent
+      path: '{{ item.path }}'
+    with_items:
+      - path: '/tmp/Linux/'
+      - path: '/tmp/xe-guest-utilities_{{ guest_utilities_version }}.tgz'
+    become: true
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
-- name: install guest-utilities via script
-  shell: /tmp/Linux/install.sh -n
-  become: true
+- block:
+    - name: make sure old version of xe-guest_utilities are not installed
+      yum:
+        name:
+          - xe-guest-utilities.x86_64
+          - xe-guest-utilities-xenstore.x86_64
+        state: absent
 
-- name: clean after installation
-  file:
-    state: absent
-    path: '{{ item.path }}'
-  with_items:
-    - path: '/tmp/Linux/'
-    - path: '/tmp/xe-guest-utilities_{{ guest_utilities_version }}.tgz'
-  become: true
+    - name: make sure xe-guest-utilities-latest from epel are installed
+      yum:
+        name: xe-guest-utilities-latest.x86_64
+        state: installed
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: start and enable xen utilities
+  systemd:
+    name: xe-linux-distribution
+    state: started
+    enabled: true
 
 - name: reboot server if defined
   reboot:

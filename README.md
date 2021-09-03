@@ -27,7 +27,7 @@ Installation
 Example Playbook
 ----------------
 ```
-    - hosts: virtual_centos_servers
+    - hosts: virtual_linux_servers
       roles:
          - { role: vmpr.xcp-ng_guest-utilities }
 ```         
@@ -38,7 +38,7 @@ Apache
 
 Todo:
 -----
-- [ ] enable role for ubuntu/debian
+- [ ] enable role for ubuntu via apt instead of CD install
 
 Author Information
 ------------------
